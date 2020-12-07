@@ -1,9 +1,27 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import { addMessage, getMessages, onMessageAdded } from "./graphql/queries";
 import MessageInput from "./MessageInput";
 import MessageList from "./MessageList";
 
-class Chat extends Component {
+const Chat =({user})=>{
+const [messages,setMessages]=useState([])
+React.useEffect(()=>{
+  const messages = await getMessages();
+},[])
+
+const handleSend=()=>{
+   addMessage(text);
+}
+return(
+  <section className='section'>
+        <div className='container'>
+          <h1 className='title'>Chatting as {user}</h1>
+          <MessageList user={user} messages={messages} />
+          <MessageInput onSend={handleSend.bind(this)} />
+        </div>
+      </section>
+)
+}
   state = { messages: [] };
   subscription = null;
 

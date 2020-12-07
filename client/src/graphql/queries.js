@@ -1,34 +1,40 @@
 import gql from "graphql-tag";
 import client from "./client";
 
-const messagesQuery = gql`
+
+const messageResponseFragment = gql`
+  fragment msgDetail on Message {
+    id
+    from
+    text
+  }
+`;
+
+export const messagesQuery = gql`
   query MessagesQuery {
     messages {
-      id
-      from
-      text
+     ...msgDetail
     }
   }
+  ${messageResponseFragment}
 `;
 
-const addMessageMutation = gql`
+export const addMessageMutation = gql`
   mutation AddMessageMutation($input: MessageInput!) {
     message: addMessage(input: $input) {
-      id
-      from
-      text
+      ...msgDetail
     }
   }
+  ${messageResponseFragment}
 `;
 
-const msgAddedSubscription = gql`
+export const msgAddedSubscription = gql`
   subscription {
     messageAdded {
-      id
-      from
-      text
+      ...msgDetail
     }
   }
+  ${messageResponseFragment}
 `;
 
 export async function addMessage(text) {
